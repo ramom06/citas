@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // CAMBIA ESTE EMAIL por el de tu madre (el mismo que pongas en index.html)
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'mama@ejemplo.com';
+    }
+
+    // Horas ocupadas (sin datos personales). Cualquiera las ve y las crea, nadie las modifica.
+    match /cells/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['date','i'])
+                    && request.resource.data.date is string
+                    && request.resource.data.i is int;
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
+    // Citas con nombre y teléfono: cualquiera puede crear una, solo la administradora puede leerlas o borrarlas.
+    match /bookings/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name','phone','svc','dur','date','start','end','note','cells','created'])
+                    && request.resource.data.name is string && request.resource.data.name.size() <= 60
+                    && request.resource.data.phone is string && request.resource.data.phone.size() <= 20
+                    && request.resource.data.note is string && request.resource.data.note.size() <= 300
+                    && request.resource.data.cells is list && request.resource.data.cells.size() <= 40;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Horario y servicios: los ve todo el mundo, solo los cambia la administradora.
+    match /config/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
