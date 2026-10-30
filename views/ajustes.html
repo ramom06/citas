@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../style.css">
+    <title>Ajustes del Negocio</title>
+</head>
+<body>
+    <main id="app">
+    <h1>Configuración</h1>
+    <p class="sub">Configura horario y servicios</p>
+
+    <div class="tabs">
+        <a href="../index.html"><button>Reservar</button></a>
+        <a href="agenda.html"><button>Agenda</button></a>
+        <a href="ajustes.html"><button class="on">Ajustes</button></a>
+    </div>
+
+        <div class="card">
+            <b>Datos generales</b>
+            <label for="cfg-salon">Nombre del negocio</label>
+            <input id="cfg-salon" type="text">
+
+            <label for="cfg-wa">WhatsApp (con código de país, sin +)</label>
+            <input id="cfg-wa" inputmode="numeric" placeholder="34600112233">
+
+            <label for="cfg-days">Días por delante que se pueden reservar</label>
+            <input id="cfg-days" type="number" min="1" max="60">
+
+            <label for="cfg-step">Intervalo entre turnos (minutos)</label>
+            <select id="cfg-step">
+                <option value="15">15 min</option>
+                <option value="30">30 min</option>
+                <option value="60">60 min</option>
+            </select>
+        </div>
+
+        <div class="card">
+            <b>Horario semanal</b>
+            <div id="sched-list"></div>
+            <p class="mut" style="margin-top:10px;">Desmarca la casilla si el local permanece cerrado ese día.</p>
+        </div>
+
+        <div class="card">
+            <b>Servicios y duración</b>
+            <div id="services-list"></div>
+            <button id="btn-add-svc" style="width:100%;margin-top:12px">+ Añadir servicio</button>
+        </div>
+
+        <button id="btn-save" class="p">Guardar cambios</button>
+
+        <p class="mut" style="text-align:center;margin-top:24px">
+            <a href="#" id="btn-logout" style="color:var(--mut)">Cerrar sesión de administradora</a>
+        </p>
+    </main>
+
+    <script type="module" src="../js/ajustes.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../style.css">
+    <title>Agenda de Citas</title>
+</head>
+<body>
+    <main id="app">
+        <h1 id="salon-name">Peluquería</h1>
+        <p class="sub">Tus próximas citas</p>
+
+        <div class="tabs">
+            <a href="../index.html"><button>Reservar</button></a>
+            <a href="agenda.html"><button class="on">Agenda</button></a>
+            <a href="ajustes.html"><button>Ajustes</button></a>
+        </div>
+
+        <div id="agenda-container">Cargando citas…</div>
+
+        <p class="mut" style="text-align:center;margin-top:24px">
+            <a href="#" id="btn-logout" style="color:var(--mut)">Cerrar sesión de administradora</a>
+        </p>
+    </main>
+
+    <script type="module" src="../js/agenda.js"></script>
+</body>
+</html>
