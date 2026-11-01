@@ -1,12 +1,5 @@
-import {
-    autenticacion,
-    baseDatos,
-    EMAIL_ADMINISTRADORA,
-    DIAS_SEMANA_LARGOS,
-    normalizarConfiguracion,
-    convertirHoraAMinutos,
-    escaparHTML
-} from "./firebase.js";
+import { baseDatos, DIAS_SEMANA_LARGOS, normalizarConfiguracion, convertirHoraAMinutos, escaparHTML } from "./firebase.js";
+import { autenticacion, EMAIL_ADMINISTRADORA } from "./auth.js";
 
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";

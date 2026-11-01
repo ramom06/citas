@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // La config va ANTES de initializeApp (si no, da "Cannot access before initialization").
 // La apiKey de Firebase no es secreta: la seguridad la dan las reglas de Firestore.
@@ -11,11 +10,8 @@ const FIREBASE_CONFIG = {
     appId: "1:694909879847:web:8fedd1ed7006492a0b3002"
 };
 
-export const EMAIL_ADMINISTRADORA = "rmartinespana@gmail.com";
-
 export const app = initializeApp(FIREBASE_CONFIG);
 export const baseDatos = getFirestore(app);
-export const autenticacion = getAuth(app);
 
 export const DIAS_SEMANA_CORTOS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
 export const DIAS_SEMANA_LARGOS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];

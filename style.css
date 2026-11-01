@@ -133,3 +133,6 @@ a.wa{display:block;
     border-color:#c0392b;
     padding:6px 10px;
 }
+
+.tabs a{flex:1}
+.tabs a button{width:100%}

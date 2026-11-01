@@ -1,7 +1,5 @@
 import {
-    autenticacion,
     baseDatos,
-    EMAIL_ADMINISTRADORA,
     DIAS_SEMANA_CORTOS,
     SERVICIOS_DEFECTO,
     crearConfiguracionDefecto,
@@ -16,7 +14,6 @@ import {
     escaparHTML
 } from "./firebase.js";
 
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
     collection,
     doc,
@@ -68,7 +65,6 @@ const botonVolverPaso1 = el("btn-back-step-1");
 const detallesFin = el("done-details");
 const botonWhatsApp = el("btn-wa-notify");
 const botonOtraCita = el("btn-book-again");
-const enlaceAdmin = el("link-admin");
 
 /* ---------- Lógica de disponibilidad ---------- */
 
@@ -290,13 +286,6 @@ botonOtraCita.addEventListener("click", () => {
 });
 
 /* ---------- Suscripciones en tiempo real ---------- */
-
-// Si la dueña inicia sesión, el enlace de abajo lleva a su agenda
-onAuthStateChanged(autenticacion, (usuario) => {
-    const esAdmin = !!usuario?.email && usuario.email.toLowerCase() === EMAIL_ADMINISTRADORA.toLowerCase();
-    enlaceAdmin.textContent = esAdmin ? "Ir a la agenda" : "Acceso administradora";
-    enlaceAdmin.href = esAdmin ? "views/agenda.html" : "views/login.html";
-});
 
 // Horario y servicios
 onSnapshot(doc(baseDatos, "config", "main"), (instantanea) => {

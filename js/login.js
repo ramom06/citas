@@ -1,4 +1,5 @@
-import { autenticacion, EMAIL_ADMINISTRADORA } from "./firebase.js";
+import { autenticacion, EMAIL_ADMINISTRADORA } from "./auth.js";
+
 import {
     onAuthStateChanged,
     signInWithEmailAndPassword,

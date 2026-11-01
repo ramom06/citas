@@ -1,12 +1,5 @@
-import {
-    autenticacion,
-    baseDatos,
-    EMAIL_ADMINISTRADORA,
-    MinutosAHora,
-    formatearFechaAClave,
-    obtenerEtiquetaFecha,
-    escaparHTML
-} from "./firebase.js";
+import { baseDatos, MinutosAHora, formatearFechaAClave, obtenerEtiquetaFecha, escaparHTML } from "./firebase.js";
+import { autenticacion, EMAIL_ADMINISTRADORA } from "./auth.js";
 
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
