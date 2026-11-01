@@ -39,7 +39,7 @@ onAuthStateChanged(autenticacion, (usuario) => {
 
 function suscribirseANombreSalon() {
     onSnapshot(doc(baseDatos, "config", "main"), (instantanea) => {
-        const nombre = instantanea.exists() && (instantanea.data().configuration ?? instantanea.data().cfg)?.salon;
+        const nombre = instantanea.exists() && instantanea.data().configuration?.salon;
         if (nombre) titulo.textContent = nombre;
     }, () => {});
 }
@@ -81,7 +81,7 @@ function pintarAgenda() {
         <div class="card">
           <div class="row">
             <div>
-              <b>${MinutosAHora(cita.start)}–${MinutosAHora(cita.end)}</b> · ${escaparHTML(cita.service ?? cita.svc)}<br>
+                <b>${MinutosAHora(cita.start)}–${MinutosAHora(cita.end)}</b> · ${escaparHTML(cita.service)}<br>
               ${escaparHTML(cita.name)} · <a href="tel:${telefono}" style="color:var(--ac)">${telefono}</a>
               ${cita.note ? `<br><span class="mut">“${escaparHTML(cita.note)}”</span>` : ""}
             </div>

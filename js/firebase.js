@@ -59,13 +59,11 @@ export function crearConfiguracionDefecto() {
  */
 export function normalizarConfiguracion(datosRemotos) {
     const base = crearConfiguracionDefecto();
-    // Acepta también los nombres antiguos (cfg / sched) por si hay datos ya guardados.
-    const remoteConfiguration = datosRemotos?.configuration || datosRemotos?.cfg || {};
+    const remoteConfiguration = datosRemotos?.configuration || {};
     const configuration = { ...base, ...remoteConfiguration };
-    delete configuration.sched;
 
     configuration.schedule = base.schedule.map((porDefecto, i) => {
-        const s = (remoteConfiguration.schedule || remoteConfiguration.sched)?.[i] || porDefecto;
+        const s = remoteConfiguration.schedule?.[i] || porDefecto;
         return {
             c: !!s.c,
             o: s.o || HORARIO_DEFECTO.o,
@@ -76,8 +74,8 @@ export function normalizarConfiguracion(datosRemotos) {
     let services = SERVICIOS_DEFECTO.map((s) => ({ ...s }));
     if (Array.isArray(datosRemotos?.services) && datosRemotos.services.length) {
         services = datosRemotos.services.map((s) => ({
-            n: String(s.n ?? s.service ?? ""),
-            time: Number(s.time ?? s.m) || 30
+            n: String(s.n ?? ""),
+            time: Number(s.time) || 30
         }));
     }
     return { configuration, services };
