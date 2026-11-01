@@ -66,6 +66,9 @@ const detallesFin = el("done-details");
 const botonWhatsApp = el("btn-wa-notify");
 const botonOtraCita = el("btn-book-again");
 
+const enlaceEstado = el("btn-status");
+
+
 /* ---------- Lógica de disponibilidad ---------- */
 
 function horarioDelDia(clave) {
@@ -164,16 +167,18 @@ function pintarPaso2() {
 
     textoError.textContent = estado.mensajeError || "";
     botonConfirmar.disabled = estado.hora === null || estado.guardando;
-    botonConfirmar.textContent = estado.guardando ? "Guardando…" : "Confirmar cita";
+    botonConfirmar.textContent = estado.guardando ? "Guardando…" : "Enviar solicitud";
 }
 
 function pintarFin() {
     const r = estado.reservaHecha;
+    const enlace = new URL("estado.html?id=" + r.id, window.location.href).href;
     detallesFin.innerHTML = `<b>${escaparHTML(r.service)}</b><br>${obtenerEtiquetaFecha(r.date)} a las ${MinutosAHora(r.start)} (${r.dur} min)`;
     const mensaje = encodeURIComponent(
-        `Hola, soy ${r.name}. He reservado ${r.service} el ${obtenerEtiquetaFecha(r.date)} a las ${MinutosAHora(r.start)}.`
+        `Hola, soy ${r.name}. He pedido cita para ${r.service} el ${obtenerEtiquetaFecha(r.date)} a las ${MinutosAHora(r.start)}. ¿Me la confirmas? Aquí puedes ver el estado: ${enlace}`
     );
     botonWhatsApp.href = `https://wa.me/${configuration.wa}?text=${mensaje}`;
+    enlaceEstado.href = enlace;
     mostrarPaso(3);
 }
 
@@ -186,6 +191,7 @@ async function reservar() {
     const celdas = calcularCeldasOcupadas(inicio, inicio + service.time);
     const idsCeldas = celdas.map((i) => fecha + "_" + i);
 
+    const refReserva = doc(collection(baseDatos, "bookings"));
     const registro = {
         name: estado.nombre.trim(),
         phone: estado.telefono.trim(),
@@ -196,6 +202,7 @@ async function reservar() {
         end: inicio + service.time,
         note: estado.nota.trim(),
         cells: idsCeldas,
+        status: "pending",
         created: Date.now()
     };
 
@@ -207,10 +214,10 @@ async function reservar() {
         // Todo o nada: si alguna celda ya existe, "set" cuenta como update (prohibido) y falla el lote entero.
         const lote = writeBatch(baseDatos);
         idsCeldas.forEach((id, j) => lote.set(doc(baseDatos, "cells", id), { date: fecha, i: celdas[j] }));
-        lote.set(doc(collection(baseDatos, "bookings")), registro);
+        lote.set(refReserva, registro);
         await lote.commit();
 
-        estado.reservaHecha = registro;
+        estado.reservaHecha = { ...registro, id: refReserva.id };  
         estado.guardando = false;
         pintarFin();
         return;

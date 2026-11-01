@@ -146,3 +146,8 @@ export function escaparHTML(cadena) {
         "'": "&#39;"
     }[caracter]));
 }
+
+export function telefonoParaWhatsApp(telefono) {
+    const digitos = String(telefono).replace(/\D/g, "");
+    return digitos.length === 9 ? "34" + digitos : digitos;
+}

@@ -136,3 +136,9 @@ a.wa{display:block;
 
 .tabs a{flex:1}
 .tabs a button{width:100%}
+
+.acciones{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.acciones button{flex:1}
+button.si{background:var(--ok);color:var(--acx);border-color:var(--ok);font-weight:600}
+a.wa.hecho{background:var(--card);color:var(--mut);border:1px solid var(--bd);font-weight:500}
+.panel{margin-top:12px;padding-top:4px;border-top:1px solid var(--bd)}

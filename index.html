@@ -39,16 +39,17 @@
         <textarea id="client-note" rows="2" maxlength="300" placeholder="Ej: preferencia de tono o indicaciones"></textarea>
 
         <p id="booking-err" class="err"></p>
-        <button id="btn-confirm-booking" class="p" disabled>Confirmar cita</button>
+        <button id="btn-confirm-booking" class="p" disabled>Enviar Solicitud</button>
         <button id="btn-back-step-1" style="width:100%;margin-top:8px">← Cambiar mis datos</button>
     </section>
 
     <!-- Paso 3: Confirmación de reserva -->
     <section id="step-done" class="card" style="display:none;">
-        <p class="ok">¡Cita reservada!</p>
+        <p class="ok">¡Solicitud enviada!</p>
         <p id="done-details"></p>
-        <p class="mut" style="margin-top:8px;">Tu cita ya ha quedado registrada en la agenda.</p>
-        <a id="btn-wa-notify" class="wa" target="_blank" rel="noopener">Avisar por WhatsApp (opcional)</a>
+        <p class="mut" style="margin-top:8px;">La peluquera la revisará y te confirmará la hora. Si ese hueco no le viene bien, te propondrá otro.</p>
+        <a id="btn-wa-notify" class="wa" target="_blank" rel="noopener">Avisar por WhatsApp (recomendado)</a>
+        <a id="btn-status" href="#" style="display:block;text-align:center;margin-top:12px;color:var(--ac)">Ver el estado de mi cita</a>
         <button id="btn-book-again" class="p">Reservar otra cita</button>
     </section>
     </main>

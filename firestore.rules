@@ -23,10 +23,22 @@ service cloud.firestore {
     }
 
     match /bookings/{id} {
-      allow read, delete: if isAdmin();
-      allow update: if false;
+      // La clienta puede leer SU cita si tiene el enlace (el id es largo y aleatorio),
+      // pero nadie puede listar todas las citas: eso es solo de la administradora.
+      allow get: if true;
+      allow list, delete: if isAdmin();
+
+      // La administradora puede cambiar lo que quiera. La clienta solo puede
+      // responder a una propuesta: aceptarla o rechazarla (únicamente el campo "status").
+      allow update: if isAdmin() || (
+        resource.data.get('status', 'confirmed') == 'proposed'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && request.resource.data['status'] in ['confirmed', 'declined']
+      );
+
       allow create: if request.resource.data.keys().hasOnly(
-          ['name','phone','service','dur','date','start','end','note','cells','created'])
+          ['name','phone','service','dur','date','start','end','note','cells','created','status'])
+        && request.resource.data['status'] == 'pending'
         && request.resource.data['name'] is string
         && request.resource.data['name'].size() > 1
         && request.resource.data['name'].size() <= 80
