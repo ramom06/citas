@@ -7,45 +7,42 @@ service cloud.firestore {
         && request.auth.token.email.lower() == 'rmartinespana@gmail.com';
     }
 
-    // Horario y servicios: todos leen, solo la administradora escribe
     match /config/{id} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Huecos ocupados (sin datos personales).
-    // Solo "create": si el hueco ya existe, el set cuenta como update y falla,
-    // así dos clientes no pueden coger la misma hora.
     match /cells/{cellId} {
       allow read: if true;
       allow create: if request.resource.data.keys().hasOnly(['date', 'i'])
-        && request.resource.data.date is string
-        && request.resource.data.i is int
-        && cellId == request.resource.data.date + '_' + string(request.resource.data.i);
+        && request.resource.data['date'] is string
+        && request.resource.data['i'] is int
+        && cellId == request.resource.data['date'] + '_' + string(request.resource.data['i']);
       allow update: if false;
       allow delete: if isAdmin();
     }
 
-    // Citas: solo la administradora las ve y las borra; los clientes solo crean
     match /bookings/{id} {
       allow read, delete: if isAdmin();
       allow update: if false;
       allow create: if request.resource.data.keys().hasOnly(
           ['name','phone','service','dur','date','start','end','note','cells','created'])
-        && request.resource.data.name is string
-        && request.resource.data.name.size() > 1 && request.resource.data.name.size() <= 80
-        && request.resource.data.phone is string
-        && request.resource.data.phone.size() >= 9 && request.resource.data.phone.size() <= 20
-        && request.resource.data.service is string
-        && request.resource.data.date is string
-        && request.resource.data.start is int
-        && request.resource.data.end is int
-        && request.resource.data.dur is int
-        && request.resource.data.note is string
-        && request.resource.data.note.size() <= 300
-        && request.resource.data.cells is list
-        && request.resource.data.cells.size() > 0
-        && request.resource.data.cells.size() <= 40;
+        && request.resource.data['name'] is string
+        && request.resource.data['name'].size() > 1
+        && request.resource.data['name'].size() <= 80
+        && request.resource.data['phone'] is string
+        && request.resource.data['phone'].size() >= 9
+        && request.resource.data['phone'].size() <= 20
+        && request.resource.data['service'] is string
+        && request.resource.data['date'] is string
+        && request.resource.data['start'] is int
+        && request.resource.data['end'] is int
+        && request.resource.data['dur'] is int
+        && request.resource.data['note'] is string
+        && request.resource.data['note'].size() <= 300
+        && request.resource.data['cells'] is list
+        && request.resource.data['cells'].size() > 0
+        && request.resource.data['cells'].size() <= 40;
     }
   }
 }
