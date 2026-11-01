@@ -171,7 +171,7 @@ function pintarPaso2() {
 
 function pintarFin() {
     const r = estado.reservaHecha;
-    const enlace = new URL("estado.html?id=" + r.id, window.location.href).href;
+    const enlace = new URL("views/estado.html?id=" + r.id, window.location.href).href;
     detallesFin.innerHTML = `<b>${escaparHTML(r.service)}</b><br>${obtenerEtiquetaFecha(r.date)} a las ${MinutosAHora(r.start)} (${r.dur} min)`;
     enlaceEstado.href = enlace;
     mostrarPaso(3);

@@ -28,13 +28,14 @@ const botonCerrarSesion = document.getElementById("btn-logout");
 let citas = [];
 let celdasOcupadas = new Set();
 let propuesta = null; // { id, fecha, hora, error } mientras se edita una propuesta
+let avisoPendiente = null; // id de la cita recién modificada, para mostrar su botón de WhatsApp arriba
 let cancelarSuscripcionCitas = null;
 let cancelarSuscripcionCeldas = null;
 
 // Estados: pending (solicitud nueva), proposed (esperando a la clienta),
 // declined (la clienta dijo que no), confirmed (cita firme). Sin estado = confirmed.
 const estadoDe = (c) => c.status || "confirmed";
-const enlaceEstado = (id) => new URL("../estado.html?id=" + id, window.location.href).href;
+const enlaceEstado = (id) => new URL("estado.html?id=" + id, window.location.href).href;
 const claveAviso = (c) => `${estadoDe(c)}|${c.date}|${c.start}`;
 const cuandoTexto = (c) => `${obtenerEtiquetaFecha(c.date)} a las ${MinutosAHora(c.start)}`;
 
@@ -170,6 +171,15 @@ function pintarAgenda() {
     }
 
     let html = "";
+    const recien = avisoPendiente && citas.find((c) => c.id === avisoPendiente);
+    if (recien && estadoDe(recien) === "proposed" && recien.notif !== claveAviso(recien)) {
+        html += `
+        <div class="card" style="border-color:var(--ok)">
+            <p class="ok">✔ Cambio guardado</p>
+            <p class="mut">Avisa a ${escaparHTML(recien.name)} para que vea su nueva hora (${cuandoTexto(recien)}) y decida si la acepta.</p>
+            ${botonAviso(recien)}
+        </div>`;
+    }
     if (nuevas.length) {
         html += `<h2>🔔 Solicitudes nuevas (${nuevas.length})</h2>` + nuevas.map((c) => tarjeta(c, true)).join("");
     }
@@ -269,7 +279,10 @@ async function enviarPropuesta() {
             notif: ""
         });
         await lote.commit();
-        propuesta = null; // al llegar el cambio, la tarjeta mostrará el botón de WhatsApp
+        avisoPendiente = c.id ?? cita.id;
+        propuesta = null;
+        pintarAgenda();
+        window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
         console.error("Error al proponer:", error);
         propuesta.error = "No se pudo guardar. Inténtalo de nuevo.";
