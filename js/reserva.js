@@ -63,7 +63,6 @@ const botonConfirmar = el("btn-confirm-booking");
 const botonVolverPaso1 = el("btn-back-step-1");
 
 const detallesFin = el("done-details");
-const botonWhatsApp = el("btn-wa-notify");
 const botonOtraCita = el("btn-book-again");
 
 const enlaceEstado = el("btn-status");
@@ -174,10 +173,6 @@ function pintarFin() {
     const r = estado.reservaHecha;
     const enlace = new URL("estado.html?id=" + r.id, window.location.href).href;
     detallesFin.innerHTML = `<b>${escaparHTML(r.service)}</b><br>${obtenerEtiquetaFecha(r.date)} a las ${MinutosAHora(r.start)} (${r.dur} min)`;
-    const mensaje = encodeURIComponent(
-        `Hola, soy ${r.name}. He pedido cita para ${r.service} el ${obtenerEtiquetaFecha(r.date)} a las ${MinutosAHora(r.start)}. ¿Me la confirmas? Aquí puedes ver el estado: ${enlace}`
-    );
-    botonWhatsApp.href = `https://wa.me/${configuration.wa}?text=${mensaje}`;
     enlaceEstado.href = enlace;
     mostrarPaso(3);
 }

@@ -93,8 +93,8 @@ function botonAviso(c) {
 
     const enlace = enlaceEstado(c.id);
     const texto = st === "confirmed"
-        ? `Hola ${c.name}, tu cita de ${c.service} el ${cuandoTexto(c)} está confirmada ✅. Puedes verla aquí: ${enlace}`
-        : `Hola ${c.name}, a esa hora no me viene bien. ¿Te iría bien el ${cuandoTexto(c)}? Pulsa aquí para decirme sí o no: ${enlace}`;
+    ? `Hola ${c.name}, tu cita de ${c.service} el ${cuandoTexto(c)} está confirmada ✅. Puedes verla aquí: ${enlace}`
+    : `Hola ${c.name}, he tenido que cambiar tu cita de ${c.service} al ${cuandoTexto(c)}. Entra aquí para aceptarla o decirme que no te viene bien y la cambio de nuevo: ${enlace}`;
     const href = `https://wa.me/${telefonoParaWhatsApp(c.phone)}?text=${encodeURIComponent(texto)}`;
 
     const yaAvisada = c.notif === claveAviso(c);

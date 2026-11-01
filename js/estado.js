@@ -18,7 +18,6 @@ const titulo = document.getElementById("salon-name");
 
 let cita = null;
 let cargada = false;
-let whatsapp = "";
 
 function botonWhatsApp(texto) {
     if (!whatsapp) return "";
@@ -31,8 +30,7 @@ function pintar() {
     if (!cita) {
         contenedor.innerHTML = `
             <p><b>No encontramos esta cita.</b></p>
-            <p class="mut">Puede que se haya cancelado o que el enlace esté incompleto. Escríbenos y lo vemos.</p>
-            ${botonWhatsApp("Hola, tengo una duda sobre mi cita.")}`;
+            <p class="mut">Puede que se haya cancelado o que el enlace esté incompleto.</p>`;
         return;
     }
 
@@ -44,29 +42,27 @@ function pintar() {
         contenedor.innerHTML = `
             <p><b>⏳ Solicitud recibida</b></p>
             ${detalle}
-            <p class="mut">Te confirmaremos la hora por WhatsApp. Puedes guardar esta página para ver cómo va.</p>`;
+            <p class="mut">Te escribiremos por WhatsApp para confirmarte la hora. Puedes guardar esta página para ver cómo va.</p>`;
     } else if (estado === "confirmed") {
         contenedor.innerHTML = `
             <p class="ok">✅ ¡Cita confirmada!</p>
             ${detalle}
-            <p class="mut">Te esperamos. Si no puedes venir, avísanos por WhatsApp.</p>
-            ${botonWhatsApp(`Hola, soy ${cita.name}. Tengo que cambiar mi cita del ${cuando}.`)}`;
+            <p class="mut">Te esperamos. Si no puedes venir, respóndenos al WhatsApp que te enviamos.</p>`;
     } else if (estado === "proposed") {
         const antes = cita.prev
             ? `<p class="mut">Tú pedías: ${obtenerEtiquetaFecha(cita.prev.date)} a las ${MinutosAHora(cita.prev.start)}</p>`
             : "";
         contenedor.innerHTML = `
-            <p><b>📅 Te proponemos otra hora</b></p>
+            <p><b>📅 Hemos cambiado tu cita</b></p>
             ${antes}
             ${detalle}
-            <p>¿Te viene bien?</p>
-            <button class="p" data-respuesta="confirmed">Sí, me viene bien</button>
+            <p>¿Te viene bien la nueva hora?</p>
+            <button class="p" data-respuesta="confirmed">Sí, la acepto</button>
             <button data-respuesta="declined" style="width:100%;margin-top:8px">No me viene bien</button>`;
     } else if (estado === "declined") {
         contenedor.innerHTML = `
-            <p><b>Has dicho que ese horario no te viene bien.</b></p>
-            <p class="mut">Escríbenos por WhatsApp y buscamos otra hora.</p>
-            ${botonWhatsApp(`Hola, soy ${cita.name}. No me viene bien el horario que me propusiste. ¿Podemos buscar otro?`)}`;
+            <p><b>Has indicado que ese horario no te viene bien.</b></p>
+            <p class="mut">Se lo hemos comunicado a la peluquera. Te escribirá por WhatsApp con otra hora.</p>`;
     }
 }
 
@@ -94,8 +90,6 @@ if (!id) {
     onSnapshot(doc(baseDatos, "config", "main"), (instantanea) => {
         const { configuration } = normalizarConfiguracion(instantanea.exists() ? instantanea.data() : null);
         titulo.textContent = configuration.salon;
-        whatsapp = configuration.wa;
-        pintar();
     }, () => {});
 
     onSnapshot(doc(baseDatos, "bookings", id), (instantanea) => {
